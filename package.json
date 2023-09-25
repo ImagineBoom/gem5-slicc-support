@@ -2,7 +2,7 @@
   "name": "gem5-slicc",
   "displayName": "gem5-slicc",
   "description": "Syntax highlighting for gem5-slicc",
-  "version": "0.0.1",
+  "version": "0.0.0-development",
   "engines": {
     "vscode": "^1.82.0"
   },
@@ -37,5 +37,12 @@
     "husky": "^8.0.3",
     "js-yaml": "^4.1.0",
     "semantic-release": "^22.0.5"
+  },
+  "scripts": {
+    "semantic-release": "semantic-release"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ImagineBoom/gem5-slicc-support.git"
   }
 }
