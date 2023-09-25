@@ -1,0 +1,89 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "gem5-slicc",
+  "patterns": [
+    {
+      "include": "#keywords"
+    },
+    {
+      "include": "#strings"
+    },
+    {
+      "include": "#support"
+    },
+    {
+      "include": "#entity"
+    },
+    {
+      "include": "#comment"
+    }
+  ],
+  "repository": {
+    "keywords": {
+      "patterns": [
+        {
+          "name": "keyword.control",
+          "match": "\\b(while|for|return)\\b"
+        },
+        {
+          "name": "keyword.control",
+          "match": "\\b(if|else)\\b"
+        }
+      ]
+    },
+    "strings": {
+      "name": "string.quoted.double",
+      "begin": "\"",
+      "end": "\"",
+      "patterns": [
+        {
+          "name": "constant.character.escape",
+          "match": "\\\\."
+        }
+      ]
+    },
+    "support": {
+      "patterns": [
+        {
+          "name": "support.class",
+          "match": "\\b(MachineType|CacheMemory|Sequencer|Cycles|MessageBuffer|TBE|Entry|State|NetDest|MachineID|DataBlock|Addr|Tick|TBETable|AccessPermission)\\b"
+        },
+        {
+          "name": "support.function",
+          "match": "\\b(machine|state_declaration|enumeration|structure|action)\\b"
+        }
+      ]
+    },
+    "entity":{
+      "patterns": [
+        {
+          "name": "entity.name.tag",
+          "match": "\\b(bool|int|double|void)\\b"
+        },
+        {
+          "name": "function-name",
+          "match": "\\b([a-zA-Z_][a-zA-Z0-9_]*)\\s*\\(",
+          "captures": {
+            "1": {
+              "name": "entity.name.function"
+            }
+          }
+        }
+      ]
+    },
+    "comment":{
+      "patterns": [
+        {
+          "name": "comment.line.double-dash",
+          "match": "//.*"
+        },
+        {
+          "name": "comment.block.documentation",
+          "begin": "/\\*",
+          "end": "\\*/"
+        }
+      ]
+    }
+  },
+  "scopeName": "source.slicc"
+}

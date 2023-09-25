@@ -1,0 +1,41 @@
+{
+  "name": "gem5-slicc",
+  "displayName": "gem5-slicc",
+  "description": "Syntax highlighting for gem5-slicc",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.82.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "gem5-slicc",
+        "aliases": [
+          "gem5-slicc",
+          "gem5-slicc"
+        ],
+        "extensions": [
+          ".sm"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "gem5-slicc",
+        "scopeName": "source.slicc",
+        "path": "./syntaxes/gem5-slicc.tmLanguage.json"
+      }
+    ]
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^17.7.1",
+    "@commitlint/config-conventional": "^17.7.0",
+    "husky": "^8.0.3",
+    "js-yaml": "^4.1.0",
+    "semantic-release": "^22.0.5"
+  }
+}
