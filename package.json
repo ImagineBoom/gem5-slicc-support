@@ -18,7 +18,8 @@
           "gem5-slicc"
         ],
         "extensions": [
-          ".sm"
+          ".sm",
+          ".slicc"
         ],
         "configuration": "./language-configuration.json"
       }

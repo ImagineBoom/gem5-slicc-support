@@ -1,20 +1,386 @@
 $schema: https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json
 name: gem5-slicc
-patterns:
-  - include: '#keywords'
-  - include: '#strings'
-  - include: '#block'
-repository:
-  keywords:
-    patterns:
-      - name: keyword.control.gem5-slicc
-        match: \b(if|while|for|return)\b
-  strings:
-    name: string.quoted.double.gem5-slicc
-    begin: '"'
-    end: '"'
-    patterns:
-      - name: constant.character.escape.gem5-slicc
-        match: \\.
 scopeName: source.slicc
 
+patterns:
+  - include: '#states_enents.define'
+  - include: '#keywords'
+  - include: '#strings'
+  - include: '#constants'
+  - include: '#comment'
+  - include: '#func.define'
+  - include: '#func.use'
+  - include: '#variables.define'
+  - include: '#variables.use'
+
+repository:
+  states_enents.define:
+    patterns:
+      - name: states_enents.define1
+        match: ^\s*([a-zA-Z_]\w*)\s*\,\s*(AccessPermission)\:\s*(\w+)\s*\,\s*(desc)\=\"(.*)\"
+        captures:
+          1: 
+            name: entity.name.function
+          2: 
+            name: variable.parameter
+          3: 
+            name: support.type
+          4: 
+            name: variable.parameter
+          5: 
+            name: string.quoted.double
+      - name: states_enents.define2
+        match: ^\s*([a-zA-Z_]\w*)\s*\,\s*(desc)\=\"(.*)\"
+        captures:
+          1: 
+            name: entity.name.function
+          2: 
+            name: variable.parameter
+          3: 
+            name: string.quoted.double
+
+  keywords:
+    patterns:
+      - name: keyword.control
+        match: \s*\b(while|for|return|include|protocol)\b\s*
+      - name: keyword.control
+        match: \s*\b(if|else)\b\s*
+
+  constants:
+    patterns:
+      - name: constant.language
+        match: \s*\b(true|True|TRUE|false|False|FALSE|null|NULL)\b\s*
+  strings:
+    begin: \s*\"
+    end: \"
+    contentName: string.quoted.double
+
+  variables.define:
+    patterns:
+      - name: variables.variables.define
+        begin: ^\s*([a-zA-Z_]\w*)\s*\*?\&?\s*\b([a-zA-Z_]\w*)\s*
+        end: \;
+        beginCaptures:
+          1:
+            name: support.type
+          2:
+            name: entity.name.tag
+        endCaptures:
+          0:
+            # name: constant.character
+        patterns:
+          - match: \s*:=\s*\"(.*)\"
+            captures:
+              1:
+                name: string.quoted.double
+          # - match: \s*:=\s*([a-zA-Z_]\w*\(.&&[^\(\)]*\))
+          #   captures:
+          #     1:
+          #       patterns:
+          #         - include: '#func.use'
+          #         - name: entity.name.tag
+          #           match: \w+
+          - name: variables.define.func.use
+            begin: \s*(([a-zA-Z_]\w*)\.)?\s*([a-zA-Z_]\w*)\s*\(
+            end: \)\s*
+            beginCaptures:
+              2: 
+                name: entity.name.tag
+              3:
+                name: entity.name.function
+            endCaptures:
+              0:
+                name: func.end
+            patterns:
+              - include: '$self'
+              - include: '#variables.use'
+              # - match: (\,)?\s*([a-zA-Z_]\w+)\s*=\s*\"([^\"]+)\"
+              #   captures:
+              #     1:
+              #       # name: constant.character
+              #     2:
+              #       name: variable.parameter
+              #     3:
+              #       name: string.quoted.double
+              - match: \s*\"([^\"]*)\"
+                captures:
+                  1:
+                    name: string.quoted.double
+              - match: \s*(\w+)\s*
+                captures:
+                  1:
+                    name: entity.name.tag
+          - match: \s*(\,)?\s*([a-zA-Z_]\w*)\s*=\s*\"([^\"]*)\"
+            captures:
+              # 1:
+              #   # name: constant.character
+              2:
+                name: variable.parameter
+              3:
+                name: string.quoted.double
+          - include: '#variables.use'
+          - match: \s*([a-zA-Z_]\w*)\.(\w+)
+            captures:
+              1:
+                name: entity.name.tag
+              2:
+                name: entity.other.attribute-name
+          - match: \s*([a-zA-Z_]\w*)\:(\w+)
+            captures:
+              1:
+                name: entity.name.tag
+              2:
+                name: support.type
+          - match: \s*([a-zA-Z_]\w*)\-\>
+            captures:
+              1:
+                name: entity.name.tag
+
+          # - match: \s*:?=\s*([^;]+)
+          #   captures:
+          #     1:
+          #       patterns:
+          #         - include: '#variables.use'
+          #         - name: entity.name.tag
+          #           match: \w+
+  variables.use:
+    patterns:
+      - name: variables.use
+        patterns:
+          - name: variables.use.attribute.func
+            begin: \s*([a-zA-Z_]\w*)\.\s*([a-zA-Z_]\w*)\(
+            end: \)\s*(\;)?
+            beginCaptures:
+              1:
+                name: entity.name.tag
+              2:
+                name: entity.name.function
+            endCaptures:
+              0:
+                name: func.end
+            patterns:
+              - include: '$self'
+              - match: \s*\"([^\"]*)\"
+                captures:
+                  1:
+                    name: string.quoted.double
+              - match: \s*(\w+)\s*
+                captures:
+                  1:
+                    name: entity.name.tag
+              
+          - match: \s*([a-zA-Z_]\w*)\.(\w+)?
+            captures:
+              1:
+                name: entity.name.tag
+              2:
+                name: entity.other.attribute-name
+          - match: \s*([a-zA-Z_]\w*)\:(\w+)
+            captures:
+              1:
+                name: entity.name.tag
+              2:
+                name: support.type
+          - match: \s*([a-zA-Z_]\w*)\-\>
+            captures:
+              1:
+                name: entity.name.tag
+          - match: \s*(\w+)\b
+            captures:
+              1:
+                name: entity.name.tag
+
+  func.define:
+    patterns:
+      - name: func.action.define
+        begin: ^\s*(action)\s*\(
+        beginCaptures:
+          1:
+            name: support.type
+        end: \)(\s*\{)?
+        endCaptures:
+          0:
+            name: func.transition.define.end
+        patterns:
+          - match: \s*([a-zA-Z_]\w+)\:(\w+)?
+            captures:
+              1:
+                name: entity.name.tag
+              2:
+                name: support.type
+          - match: \s*\:\=\s*\"(\w+)\"\b
+            captures:
+              1:
+                name: string.quoted.double
+          - match: \s*([a-zA-Z_]\w*)\b\s*\*?\&?\s*\b([a-zA-Z_]\w*)
+            captures:
+              1:
+                name: support.type
+              2:
+                name: entity.name.tag
+          - match: \s*\"([^\"]*)\"
+            captures:
+              1:
+                name: string.quoted.double
+          - match: \s*(\,)?\s*([a-zA-Z_]\w+)\s*=\s*\"([^\"]*)\"
+            captures:
+              1:
+                # name: constant.character
+              2:
+                name: variable.parameter
+              3:
+                name: string.quoted.double
+          - match: \s*([a-zA-Z_]\w*)
+            captures:
+              1:
+                name: entity.name.tag
+      - name: func.transition.define
+        begin: ^\s*(transition)\s*\(
+        beginCaptures:
+          1:
+            name: support.type
+
+        end: \)\s*(\{.*\})?
+        endCaptures:
+          1:
+            patterns:
+              - match: \w+
+                name: entity.name.function
+        patterns:
+          - match: \s*([a-zA-Z_]\w*)
+            captures:
+              1:
+                name: entity.name.function
+          - include: '#comment'
+      - name: func.state.define
+        begin: ^\s*(machine|state_declaration|enumeration|structure)\s*\(
+        beginCaptures:
+          1:
+            name: support.function
+          2:
+            patterns:
+              - include: '#strings'
+              - match: \,?(\w+)\,?
+                captures:
+                  1:
+                    name: variable.parameter
+        end: \)(\s*\{)?
+        endCaptures:
+          0:
+            # name: constant.character
+        patterns:
+          - match: \s*([a-zA-Z_]\w+)\:(\w+)?
+            captures:
+              1:
+                name: entity.name.tag
+              2:
+                name: support.type
+          - match: \s*\:\=\s*\"(\w+)\"\b
+            captures:
+              1:
+                name: string.quoted.double
+          - match: \s*([a-zA-Z_]\w*)\b\s*\*?\&?\s*\b([a-zA-Z_]\w*)
+            captures:
+              1:
+                name: support.type
+              2:
+                name: entity.name.tag
+          - match: \s*\"([^\"]*)\"
+            captures:
+              1:
+                name: string.quoted.double
+          - match: \s*(\,)?\s*([a-zA-Z_]\w+)\s*=\s*\"([^\"]*)\"
+            captures:
+              1:
+                # name: constant.character
+              2:
+                name: variable.parameter
+              3:
+                name: string.quoted.double
+          - match: \s*([a-zA-Z_]\w*)
+            captures:
+              1:
+                name: support.type
+
+      - name: func.func.define
+        begin: ^\s*\b([a-zA-Z_]\w*)\b\s*\*?\&?\s*\b([a-zA-Z_]\w*)\s*\(
+        end: \)(\;)?
+        beginCaptures:
+          1:
+            name: support.type
+          2:
+            name: entity.name.function
+        endCaptures:
+          0:
+            name: func.func.define.end
+        patterns:
+          - match: ([a-zA-Z_]\w*)\b\s*\*?\&?\s*\b([a-zA-Z_]\w*)
+            captures:
+              1:
+                name: support.type
+              2:
+                name: entity.name.tag
+          - match: \s*:=\s*"?(\w+)"?\b
+            captures:
+              1:
+                name: string.quoted.double
+          - match: \"([^\"]*)\"
+            captures:
+              1:
+                name: string.quoted.double
+          - match: (\,)?\s*([a-zA-Z_][a-zA-Z0-9_]+)\s*=\s*\"([^\"]+)\"
+            captures:
+              # 1:
+                # name: constant.character
+              2:
+                name: variable.parameter
+              3:
+                name: string.quoted.double
+          - match: ([a-zA-Z_]\w*)
+            captures:
+              1:
+                name: support.type
+
+  func.use:
+    patterns:
+      - name: func.use
+        begin: \s*([a-zA-Z_]\w*)\s*\(
+        end: \)\s*(\;)?
+        beginCaptures:
+          1:
+            name: entity.name.function
+        endCaptures:
+          0:
+            name: func.end
+        patterns:
+          - include: '$self'
+          - include: '#variables.use'
+          # - match: (\,)?\s*([a-zA-Z_]\w+)\s*=\s*\"([^\"]+)\"
+          #   captures:
+          #     1:
+          #       # name: constant.character
+          #     2:
+          #       name: variable.parameter
+          #     3:
+          #       name: string.quoted.double
+          - match: \s*\"([^\"]*)\"
+            captures:
+              1:
+                name: string.quoted.double
+          - match: \s*(\w+)\s*
+            captures:
+              1:
+                name: entity.name.tag
+
+  
+  comment:
+    patterns:
+      - name: comment.line.double-dash
+        match: //.*
+      - name: comment.block.documentation
+        begin: /\*
+        beginCaptures:
+          0: comment.block.documentation
+        end: \*/
+        endCaptures:
+          0: comment.block.documentation

@@ -7,12 +7,41 @@
 * `syntaxes/gem5-slicc.tmLanguage.json` - this is the Text mate grammar file that is used for tokenization.
 * `language-configuration.json` - this is the language configuration, defining the tokens that are used for comments and brackets.
 
+* json -> yaml
+```bash
+npx js-yaml syntaxes/gem5-slicc.tmLanguage.json > syntaxes/gem5-slicc.tmLanguage.yaml
+```
+* yaml -> json
+```bash
+npx js-yaml syntaxes/gem5-slicc.tmLanguage.yaml > syntaxes/gem5-slicc.tmLanguage.json
+```
+
 ## Get up and running straight away
 
 * Make sure the language configuration settings in `language-configuration.json` are accurate.
 * Press `F5` to open a new window with your extension loaded.
 * Create a new file with a file name suffix matching your language.
 * Verify that syntax highlighting works and that the language configuration settings are working.
+
+## Generate Packge
+- ref: https://code.visualstudio.com/api/working-with-extensions/publishing-extension
+
+Installation
+Make sure you have Node.js installed. Then run:
+
+```bash
+npm install -g @vscode/vsce
+```
+
+Usage
+You can use vsce to easily package and publish your extensions:
+```bash
+vsce package
+
+# output -> myExtension.vsix generated
+```
+
+
 
 ## Make changes
 
