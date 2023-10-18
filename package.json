@@ -16,7 +16,6 @@
       {
         "id": "gem5-slicc",
         "aliases": [
-          "gem5-slicc",
           "gem5-slicc"
         ],
         "extensions": [
