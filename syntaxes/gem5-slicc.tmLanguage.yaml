@@ -58,7 +58,7 @@ repository:
   variables.define:
     patterns:
       - name: variables.variables.define
-        begin: ^\s*([a-zA-Z_]\w*)\s*\*?\&?\s*\b([a-zA-Z_]\w*)\s*
+        begin: ^\s*\:?\s*([a-zA-Z_]\w*)\s*\*?\&?\s*\b([a-zA-Z_]\w*)\s*
         end: \;
         beginCaptures:
           1:
