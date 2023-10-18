@@ -6,27 +6,27 @@ gem5-slicc supportor
 
 ### syntax highlight support
 
-- [x] variable define
+- [x] variable
 
 ![feature syntax supportor](images/syntax1.png)
 
-- [x] state/event define
+- [x] state/event
 
 ![feature syntax supportor](images/syntax2.png)
 
-- [x] struct define
+- [x] struct
 
 ![feature syntax supportor](images/syntax3.png)
 
-- [x] transition define
+- [x] transition
 
 ![feature syntax supportor](images/syntax4.png)
 
-- [x] action define
+- [x] action
 
 ![feature syntax supportor](images/syntax5.png)
 
-- [x] function define
+- [x] function
 
 ![feature syntax supportor](images/syntax6.png)
 
@@ -37,6 +37,8 @@ gem5-slicc supportor
 gem5 slicc code
 
 ## Extension Settings
+
+recommend color theme: Dark Modern
 
 ## Known Issues
 
