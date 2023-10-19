@@ -15,6 +15,10 @@
     "languages": [
       {
         "id": "gem5-slicc",
+        "icon": {
+          "light": "images/file_icons/icon_512x512@2x.png",
+          "dark": "images/file_icons/icon_512x512@2x.png"
+        },
         "aliases": [
           "gem5-slicc"
         ],
