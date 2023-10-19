@@ -4,27 +4,41 @@ gem5-slicc supportor
 
 ## Features
 
+- file icon
+
+![Alt text](images/file_icon.png)
+
 ### syntax highlight support
 
 - [x] variable
 
 ![feature syntax supportor](images/syntax1.png)
 
+---
+
 - [x] state/event
 
 ![feature syntax supportor](images/syntax2.png)
+
+---
 
 - [x] struct
 
 ![feature syntax supportor](images/syntax3.png)
 
+---
+
 - [x] transition
 
 ![feature syntax supportor](images/syntax4.png)
 
+---
+
 - [x] action
 
 ![feature syntax supportor](images/syntax5.png)
+
+---
 
 - [x] function
 
