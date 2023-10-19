@@ -4,6 +4,13 @@ All notable changes to the "gem5-slicc" extension will be documented in this fil
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.1.0](https://github.com/ImagineBoom/gem5-slicc-support/compare/v1.0.2...v1.1.0) (2023-10-19)
+
+
+### Features
+
+* support display file icon ([9272074](https://github.com/ImagineBoom/gem5-slicc-support/commit/9272074d6138f151d131c9a2957f55f9f818adc4))
+
 ## [1.0.2](https://github.com/ImagineBoom/gem5-slicc-support/compare/v1.0.1...v1.0.2) (2023-10-18)
 
 
