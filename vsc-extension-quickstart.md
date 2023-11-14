@@ -23,6 +23,16 @@ npx js-yaml syntaxes/gem5-slicc.tmLanguage.yaml > syntaxes/gem5-slicc.tmLanguage
 * Create a new file with a file name suffix matching your language.
 * Verify that syntax highlighting works and that the language configuration settings are working.
 
+## Build the extension
+
+```shellscript
+npm install
+```
+
+```shellscript
+npm run compile
+```
+
 ## Generate Packge
 - ref: https://code.visualstudio.com/api/working-with-extensions/publishing-extension
 

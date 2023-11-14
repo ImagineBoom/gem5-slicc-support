@@ -4,9 +4,13 @@ gem5-slicc supportor
 
 ## Features
 
-- file icon
+### file icon
 
 ![Alt text](images/file_icon.png)
+
+### outline
+
+![Alt text](images/outline.png)
 
 ### syntax highlight support
 

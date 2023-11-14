@@ -11,6 +11,7 @@
   "categories": [
     "Programming Languages"
   ],
+  "main": "./out/extension.js",
   "contributes": {
     "languages": [
       {
@@ -40,11 +41,15 @@
   "devDependencies": {
     "@commitlint/cli": "^17.7.1",
     "@commitlint/config-conventional": "^17.7.0",
+    "@types/jest": "^29.5.8",
+    "@types/mocha": "^10.0.4",
+    "@types/vscode": "^1.84.1",
     "husky": "^8.0.3",
     "js-yaml": "^4.1.0",
     "semantic-release": "^22.0.5"
   },
   "scripts": {
+    "compile": "tsc -p ./",
     "semantic-release": "semantic-release"
   },
   "repository": {
