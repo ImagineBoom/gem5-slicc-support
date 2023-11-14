@@ -4,6 +4,15 @@ All notable changes to the "gem5-slicc" extension will be documented in this fil
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.4.2](https://github.com/ImagineBoom/gem5-slicc-support/compare/v1.4.1...v1.4.2) (2023-11-14)
+
+
+### Bug Fixes
+
+* function multi lines define ([11712a6](https://github.com/ImagineBoom/gem5-slicc-support/commit/11712a66a072adf2f121d708f3aca566ebea1086))
+* port define multi lines ([2a4e8ee](https://github.com/ImagineBoom/gem5-slicc-support/commit/2a4e8ee22e285208be8de7c8712bebc8a3561423))
+* transition define multi lines ([78815fc](https://github.com/ImagineBoom/gem5-slicc-support/commit/78815fc7d5fa52d18d484f192abc61b58726abcf))
+
 ## [1.4.1](https://github.com/ImagineBoom/gem5-slicc-support/compare/v1.4.0...v1.4.1) (2023-11-14)
 
 
