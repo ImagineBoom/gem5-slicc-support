@@ -37,7 +37,12 @@ class gem5slicc_DocumentSymbolProvider implements vscode.DocumentSymbolProvider 
             const transition = vscode.SymbolKind.Package
 
             for (let i = 0; i < document.lineCount; i++) {
-                const line = document.lineAt(i);
+                var line = document.lineAt(i);
+                var nextline = null
+                if(i+1<document.lineCount){
+                    nextline=document.lineAt(i+1)
+                }
+
                 // const tokens = line.text.split(" ")
                 if (line.text.trim().startsWith("action")) {
                     const name = line.text.match(/action\s*\(\s*(\w+)/)
@@ -124,8 +129,52 @@ class gem5slicc_DocumentSymbolProvider implements vscode.DocumentSymbolProvider 
                         line.range, line.range)
                     nodes[nodes.length-1].push(marker_symbol)
                 }else if(!in_struct){
-                    const name = line.text.match(/[a-zA-Z_]\w+\s+([a-zA-Z_]\w+\(.*\))/)
-                    if (name==null){
+                    var is_func=false
+                    var name
+                    if(line.text.match(/^[a-zA-Z_]\w+\s+([a-zA-Z_]\w+\s*\(.*\))\s*[^\)\{]*\s*\{/)){
+                        is_func=true
+                        name=line.text.match(/^[a-zA-Z_]\w+\s+([a-zA-Z_]\w+\s*\(.*\))/)
+                    } else if(line.text.match(/^[a-zA-Z_]\w+\s+([a-zA-Z_]\w+\s*\(.*\))\s*$/)){
+                        if(nextline?.text.match(/^\s*\{/)){
+                            is_func=true
+                            name=line.text.match(/^[a-zA-Z_]\w+\s+([a-zA-Z_]\w+\s*\(.*\))/)
+                        }
+                    }else if(line.text.match(/^[a-zA-Z_]\w+\s+([a-zA-Z_]\w+\s*\([^\(\)\{\}]*$)/)){
+                        // ), score=1
+                        // ) and then { , score=2, maybe one line or multi lines
+                        var score=0
+                        for (var j=i+1;j < document.lineCount; j++) {
+                            if(j>=document.lineCount){
+                                is_func=false
+                                break
+                            }
+                            var tmp_line = document.lineAt(j);
+                            if(tmp_line.text.match(/[^\)\{]*[\(\}]+/)){
+                                is_func=false
+                                break
+                            } else if(score==0) {
+                                if(tmp_line.text.match(/[^\)\{]*\)\s*[^\)\{]*\s*\{/)){
+                                    is_func=true
+                                    break
+                                }
+                                if(tmp_line.text.match(/[^\)\{]*\)\s*[^\)\{]*\s*/)){
+                                    score=1
+                                }
+                            } else if(score==1){
+                                if(tmp_line.text.match(/[^\)\{]*\{\s*/)){
+                                    score=2
+                                    is_func=true
+                                    i=j
+                                }
+                            }
+                        }
+                        if(is_func){
+                            name=line.text.match(/^[a-zA-Z_]\w+\s+([a-zA-Z_]\w+\s*\([^\(\)\{\}]*)\s*/)
+                        }
+
+                    }
+
+                    if (name==null || is_func==false){
                         continue
                     }
                     const marker_symbol = new vscode.DocumentSymbol(
