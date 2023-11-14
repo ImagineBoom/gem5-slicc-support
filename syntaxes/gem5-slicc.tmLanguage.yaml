@@ -6,14 +6,13 @@ patterns:
   - include: '#states_enents.define'
   - include: '#enum.define'
   - include: '#keywords'
-  - include: '#strings'
   - include: '#constants'
   - include: '#comment'
   - include: '#func.define'
   - include: '#func.use'
   - include: '#variables.define'
   - include: '#variables.use'
-
+  - include: '#strings_default'
 repository:
   states_enents.define:
     patterns:
@@ -51,10 +50,24 @@ repository:
     patterns:
       - name: constant.language
         match: \s*\b(true|True|TRUE|false|False|FALSE|null|NULL)\b\s*
-  strings:
+  strings_format:
+    patterns:
+      - name: string.quoted.double
+        begin: \s*\"
+        end: \"
+        contentName: format
+        patterns:
+          # - match: \%[^%\"\\/\s,\:\(\)]+
+          #   name: variable.parameter
+          - name: variable.parameter
+            match: \%[-+\s#0]?[\d]*[\*]?[\.]?[\*]?[hlL]?(a|A|d|o|x|X|u|f|e|E|g|G|c|s|p|lu|llu)
+
+  strings_default:
     begin: \s*\"
     end: \"
     contentName: string.quoted.double
+
+
 
   variables.define:
     patterns:
@@ -68,7 +81,7 @@ repository:
             name: entity.name.tag
         endCaptures:
           0:
-            # name: constant.character
+            name: constant.character
         patterns:
           - match: \s*:=\s*\"(.*)\"
             captures:
@@ -203,7 +216,8 @@ repository:
           - name: enum.define.para
             begin: \s*\(\s*
             beginCaptures:
-              0: enum.define.para.begin
+              0:
+                name: enum.define.para.begin
             end: \s*\)\s*
             endCaptures:
               0:
@@ -232,7 +246,7 @@ repository:
               - match: \s*(\,)?\s*([a-zA-Z_]\w+)\s*=\s*\"([^\"]*)\"
                 captures:
                   1:
-                    # name: constant.character
+                    name: constant.character
                   2:
                     name: variable.parameter
                   3:
@@ -284,7 +298,7 @@ repository:
           - match: \s*(\,)?\s*([a-zA-Z_]\w+)\s*=\s*\"([^\"]*)\"
             captures:
               1:
-                # name: constant.character
+                name: constant.character
               2:
                 name: variable.parameter
               3:
@@ -326,7 +340,7 @@ repository:
         end: \)(\s*\{)?
         endCaptures:
           0:
-            # name: constant.character
+            name: constant.character
         patterns:
           - match: \s*([a-zA-Z_]\w+)\:(\w+)?
             captures:
@@ -351,7 +365,7 @@ repository:
           - match: \s*(\,)?\s*([a-zA-Z_]\w+)\s*=\s*\"([^\"]*)\"
             captures:
               1:
-                # name: constant.character
+                name: constant.character
               2:
                 name: variable.parameter
               3:
@@ -411,7 +425,9 @@ repository:
         endCaptures:
           0:
             name: func.end
+        # contentName: func
         patterns:
+          - include: '#strings_format'
           - include: '$self'
           - include: '#variables.use'
           # - match: (\,)?\s*([a-zA-Z_]\w+)\s*=\s*\"([^\"]+)\"
@@ -422,10 +438,7 @@ repository:
           #       name: variable.parameter
           #     3:
           #       name: string.quoted.double
-          - match: \s*\"([^\"]*)\"
-            captures:
-              1:
-                name: string.quoted.double
+
           - match: \s*(\w+)\s*
             captures:
               1:
@@ -439,7 +452,9 @@ repository:
       - name: comment.block.documentation
         begin: /\*
         beginCaptures:
-          0: comment.block.documentation
+          0:
+            name: comment.block.documentation
         end: \*/
         endCaptures:
-          0: comment.block.documentation
+          0:
+            name: comment.block.documentation

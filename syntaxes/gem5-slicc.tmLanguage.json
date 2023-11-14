@@ -13,9 +13,6 @@
       "include": "#keywords"
     },
     {
-      "include": "#strings"
-    },
-    {
       "include": "#constants"
     },
     {
@@ -32,6 +29,9 @@
     },
     {
       "include": "#variables.use"
+    },
+    {
+      "include": "#strings_default"
     }
   ],
   "repository": {
@@ -95,7 +95,23 @@
         }
       ]
     },
-    "strings": {
+    "strings_format": {
+      "patterns": [
+        {
+          "name": "string.quoted.double",
+          "begin": "\\s*\\\"",
+          "end": "\\\"",
+          "contentName": "format",
+          "patterns": [
+            {
+              "name": "variable.parameter",
+              "match": "\\%[-+\\s#0]?[\\d]*[\\*]?[\\.]?[\\*]?[hlL]?(a|A|d|o|x|X|u|f|e|E|g|G|c|s|p|lu|llu)"
+            }
+          ]
+        }
+      ]
+    },
+    "strings_default": {
       "begin": "\\s*\\\"",
       "end": "\\\"",
       "contentName": "string.quoted.double"
@@ -115,7 +131,9 @@
             }
           },
           "endCaptures": {
-            "0": null
+            "0": {
+              "name": "constant.character"
+            }
           },
           "patterns": [
             {
@@ -318,7 +336,9 @@
               "name": "enum.define.para",
               "begin": "\\s*\\(\\s*",
               "beginCaptures": {
-                "0": "enum.define.para.begin"
+                "0": {
+                  "name": "enum.define.para.begin"
+                }
               },
               "end": "\\s*\\)\\s*",
               "endCaptures": {
@@ -368,7 +388,9 @@
                 {
                   "match": "\\s*(\\,)?\\s*([a-zA-Z_]\\w+)\\s*=\\s*\\\"([^\\\"]*)\\\"",
                   "captures": {
-                    "1": null,
+                    "1": {
+                      "name": "constant.character"
+                    },
                     "2": {
                       "name": "variable.parameter"
                     },
@@ -464,7 +486,9 @@
             {
               "match": "\\s*(\\,)?\\s*([a-zA-Z_]\\w+)\\s*=\\s*\\\"([^\\\"]*)\\\"",
               "captures": {
-                "1": null,
+                "1": {
+                  "name": "constant.character"
+                },
                 "2": {
                   "name": "variable.parameter"
                 },
@@ -541,7 +565,9 @@
           },
           "end": "\\)(\\s*\\{)?",
           "endCaptures": {
-            "0": null
+            "0": {
+              "name": "constant.character"
+            }
           },
           "patterns": [
             {
@@ -585,7 +611,9 @@
             {
               "match": "\\s*(\\,)?\\s*([a-zA-Z_]\\w+)\\s*=\\s*\\\"([^\\\"]*)\\\"",
               "captures": {
-                "1": null,
+                "1": {
+                  "name": "constant.character"
+                },
                 "2": {
                   "name": "variable.parameter"
                 },
@@ -690,18 +718,13 @@
           },
           "patterns": [
             {
+              "include": "#strings_format"
+            },
+            {
               "include": "$self"
             },
             {
               "include": "#variables.use"
-            },
-            {
-              "match": "\\s*\\\"([^\\\"]*)\\\"",
-              "captures": {
-                "1": {
-                  "name": "string.quoted.double"
-                }
-              }
             },
             {
               "match": "\\s*(\\w+)\\s*",
@@ -725,11 +748,15 @@
           "name": "comment.block.documentation",
           "begin": "/\\*",
           "beginCaptures": {
-            "0": "comment.block.documentation"
+            "0": {
+              "name": "comment.block.documentation"
+            }
           },
           "end": "\\*/",
           "endCaptures": {
-            "0": "comment.block.documentation"
+            "0": {
+              "name": "comment.block.documentation"
+            }
           }
         }
       ]
