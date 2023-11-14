@@ -69,24 +69,24 @@ class gem5slicc_DocumentSymbolProvider implements vscode.DocumentSymbolProvider 
                     nodes[nodes.length-1].push(marker_symbol)
                 }
                 else if (line.text.trim().startsWith("in_port")) {
-                    const name = line.text.match(/in_port\s*\(\s*(.*)\)/)
+                    const name = line.text.match(/in_port\s*\((.*)/)
                     if (name==null){
                         continue
                     }
                     const marker_symbol = new vscode.DocumentSymbol(
-                        "in_port( "+name[1]+")",
+                        "in_port( "+name[1],
                         '',
                         port,
                         line.range, line.range)
                     nodes[nodes.length-1].push(marker_symbol)
                 }
                 else if (line.text.trim().startsWith("out_port")) {
-                    const name = line.text.match(/out_port\s*\(\s*(.*)\)/)
+                    const name = line.text.match(/out_port\s*\((.*)/)
                     if (name==null){
                         continue
                     }
                     const marker_symbol = new vscode.DocumentSymbol(
-                        "out_port( "+name[1]+")",
+                        "out_port( "+name[1],
                         '',
                         port,
                         line.range, line.range)
