@@ -27,7 +27,7 @@ class gem5slicc_DocumentSymbolProvider implements vscode.DocumentSymbolProvider 
         {
             const symbols: vscode.DocumentSymbol[] = [];
             const nodes = [symbols]
-
+            var in_struct = false
             const state = vscode.SymbolKind.Enum
             const event = vscode.SymbolKind.Enum
             const struct = vscode.SymbolKind.Struct
@@ -98,6 +98,7 @@ class gem5slicc_DocumentSymbolProvider implements vscode.DocumentSymbolProvider 
                         struct,
                         line.range, line.range)
                     nodes[nodes.length-1].push(marker_symbol)
+                    in_struct=true
                 }
                 else if (line.text.trim().startsWith("enumeration")) {
                     const name = line.text.match(/enumeration\s*\(\s*(\w+)/)
@@ -122,7 +123,7 @@ class gem5slicc_DocumentSymbolProvider implements vscode.DocumentSymbolProvider 
                         state,
                         line.range, line.range)
                     nodes[nodes.length-1].push(marker_symbol)
-                }else if(line.text.match(/[a-zA-Z_]\w+\s+[a-zA-Z_]\w+\((.*)\)/)){
+                }else if(!in_struct){
                     const name = line.text.match(/[a-zA-Z_]\w+\s+([a-zA-Z_]\w+\(.*\))/)
                     if (name==null){
                         continue
@@ -133,6 +134,10 @@ class gem5slicc_DocumentSymbolProvider implements vscode.DocumentSymbolProvider 
                         func,
                         line.range, line.range)
                     nodes[nodes.length-1].push(marker_symbol)
+                }else if(line.text.match(/^\s*\}/)){
+                    if(in_struct){
+                        in_struct=false
+                    }
                 }
             }
             resolve(symbols);
