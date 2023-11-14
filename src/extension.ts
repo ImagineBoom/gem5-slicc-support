@@ -57,12 +57,12 @@ class gem5slicc_DocumentSymbolProvider implements vscode.DocumentSymbolProvider 
                     nodes[nodes.length-1].push(marker_symbol)
                 }
                 else if (line.text.trim().startsWith("transition")) {
-                    const name = line.text.match(/transition\s*\((.*)\)/)
+                    const name = line.text.match(/transition\s*\(([^)]*)/)
                     if (name==null){
                         continue
                     }
                     const marker_symbol = new vscode.DocumentSymbol(
-                        "T..  "+name[1]+" ",
+                        "T..  "+name[1],
                         '',
                         transition,
                         line.range, line.range)
