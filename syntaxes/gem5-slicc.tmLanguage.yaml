@@ -60,7 +60,7 @@ repository:
           # - match: \%[^%\"\\/\s,\:\(\)]+
           #   name: variable.parameter
           - name: variable.parameter
-            match: \%[-+\s#0]?[\d]*[\*]?[\.]?[\*]?[hlL]?(a|A|d|o|x|X|u|f|e|E|g|G|c|s|p|lu|llu)
+            match: \%((\d+\$)?[-+\s#0]?0*(\d+|\*)?(\.\d+|\.\*)?(hh|h|ll|l|L|z|j|t)?(d|i|u|f|F|e|E|g|G|x|X|o|s|c|p|a|A|n)|%)
 
   strings_default:
     begin: \s*\"
