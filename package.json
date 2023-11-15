@@ -2,7 +2,7 @@
   "name": "gem5-slicc",
   "displayName": "gem5-slicc",
   "description": "Syntax highlighting for gem5-slicc",
-  "version": "1.4.2",
+  "version": "1.4.3",
   "publisher": "Tsinghua-Hexin-Joint-Institute",
   "icon": "images/icons/icon_512x512@2x.png",
   "engines": {
