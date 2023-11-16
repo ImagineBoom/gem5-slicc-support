@@ -39,18 +39,80 @@
     ]
   },
   "devDependencies": {
-    "@commitlint/cli": "^17.7.1",
-    "@commitlint/config-conventional": "^17.7.0",
+    "@commitlint/cli": "^17.8.1",
+    "@commitlint/config-conventional": "^17.8.1",
     "@types/jest": "^29.5.8",
     "@types/mocha": "^10.0.4",
     "@types/vscode": "^1.82.0",
+    "commitizen": "^4.3.0",
     "husky": "^8.0.3",
     "js-yaml": "^4.1.0",
     "semantic-release": "^22.0.5"
   },
   "scripts": {
     "compile": "tsc -p ./",
-    "semantic-release": "semantic-release"
+    "semantic-release": "semantic-release",
+    "cz": "cz"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog",
+      "disableScopeLowerCase": false,
+      "disableSubjectLowerCase": false,
+      "maxHeaderWidth": 72,
+      "maxLineWidth": 100,
+      "defaultType": "",
+      "defaultScope": "",
+      "defaultSubject": "",
+      "defaultBody": "",
+      "defaultIssues": "",
+      "types": {
+        "feat": {
+          "title": "Features",
+          "description": "✨  A new feature\n"
+        },
+        "fix": {
+          "title": "Bug Fixes",
+          "description": "🐛  A bug fix\n"
+        },
+        "docs": {
+          "title": "Documentation",
+          "description": "📚  Documentation only changes\n"
+        },
+        "style": {
+          "title": "Styles",
+          "description": "💎  Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)\n"
+        },
+        "refactor": {
+          "title": "Code Refactoring",
+          "description": "📦  A code change that neither fixes a bug nor adds a feature\n"
+        },
+        "perf": {
+          "title": "Performance Improvements",
+          "description": "🚀  A code change that improves performance\n"
+        },
+        "test": {
+          "title": "Tests",
+          "description": "🚨  Adding missing tests or correcting existing tests\n"
+        },
+        "build": {
+          "title": "Builds",
+          "description": "🛠  Changes that affect the build system or external dependencies (example scopes: gulp, broccoli, npm)\n"
+        },
+        "ci": {
+          "title": "Continuous Integrations",
+          "description": "⛭  Changes to our CI configuration files and scripts (example scopes: Travis, Circle, BrowserStack, SauceLabs)\n"
+        },
+        "chore": {
+          "title": "Chores",
+          "description": "♻️  Other changes that don't modify src or test files\n"
+        },
+        "revert": {
+          "title": "Reverts",
+          "description": "🗑  Reverts a previous commit\n"
+        }
+      }
+    }
   },
   "repository": {
     "type": "git",
