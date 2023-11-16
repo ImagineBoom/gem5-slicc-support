@@ -173,6 +173,7 @@ repository:
               0:
                 name: func.end
             patterns:
+              - include: '#strings_format'
               - include: '$self'
               - match: \s*\"([^\"]*)\"
                 captures:

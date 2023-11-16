@@ -258,6 +258,9 @@
               },
               "patterns": [
                 {
+                  "include": "#strings_format"
+                },
+                {
                   "include": "$self"
                 },
                 {
