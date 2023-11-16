@@ -56,7 +56,7 @@ gem5 slicc code
 
 ## Extension Settings
 
-recommend color theme: Dark Modern
+recommend color theme: **Dark Modern**, **GitHub Dark Default**
 
 ## Known Issues
 
