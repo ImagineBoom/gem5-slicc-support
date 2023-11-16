@@ -4,6 +4,13 @@ All notable changes to the "gem5-slicc" extension will be documented in this fil
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.4.5](https://github.com/ImagineBoom/gem5-slicc-support/compare/v1.4.4...v1.4.5) (2023-11-16)
+
+
+### Bug Fixes
+
+* **syntax:** remove constant.character in variables.define ([2df8d53](https://github.com/ImagineBoom/gem5-slicc-support/commit/2df8d53a4749a005e1832ea303db4ede77b98a59))
+
 ## [1.4.4](https://github.com/ImagineBoom/gem5-slicc-support/compare/v1.4.3...v1.4.4) (2023-11-16)
 
 
