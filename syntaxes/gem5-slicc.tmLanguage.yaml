@@ -67,8 +67,6 @@ repository:
     end: \"
     contentName: string.quoted.double
 
-
-
   variables.define:
     patterns:
       - name: variables.variables.define
@@ -79,9 +77,9 @@ repository:
             name: support.type
           2:
             name: entity.name.tag
-        endCaptures:
-          0:
-            name: constant.character
+        # endCaptures:
+          # 0:
+          #   name: constant.character
         patterns:
           - match: \s*:=\s*\"(.*)\"
             captures:

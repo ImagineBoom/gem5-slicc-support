@@ -130,11 +130,6 @@
               "name": "entity.name.tag"
             }
           },
-          "endCaptures": {
-            "0": {
-              "name": "constant.character"
-            }
-          },
           "patterns": [
             {
               "match": "\\s*:=\\s*\\\"(.*)\\\"",
