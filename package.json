@@ -2,7 +2,7 @@
   "name": "gem5-slicc",
   "displayName": "gem5-slicc",
   "description": "gem5 slicc support for Visual Studio Code.",
-  "version": "1.4.5",
+  "version": "1.5.0",
   "publisher": "Tsinghua-Hexin-Joint-Institute",
   "icon": "images/icons/icon_512x512@2x.png",
   "engines": {
@@ -12,8 +12,8 @@
     "Programming Languages"
   ],
   "main": "./out/extension.js",
-  "capabilities" : {
-    "referencesProvider" : "true"
+  "capabilities": {
+    "referencesProvider": "true"
   },
   "contributes": {
     "languages": [
