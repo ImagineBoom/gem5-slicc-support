@@ -11,6 +11,13 @@ export function activate(context: vscode.ExtensionContext) {
             new gem5slicc_DocumentSymbolProvider()
         )
     );
+
+    context.subscriptions.push(
+        vscode.languages.registerReferenceProvider(
+            'gem5-slicc',
+            new gem5sliccReferenceProvider()
+        )
+    );
 }
 
 class gem5slicc_DocumentSymbolProvider implements vscode.DocumentSymbolProvider {
@@ -190,6 +197,101 @@ class gem5slicc_DocumentSymbolProvider implements vscode.DocumentSymbolProvider 
                 }
             }
             resolve(symbols);
+        });
+    }
+}
+
+// class gem5sliccReferenceProvider implements vscode.ReferenceProvider {
+//     public async provideReferences(
+//         document: vscode.TextDocument, position: vscode.Position,
+//         options: { includeDeclaration: boolean }, token: vscode.CancellationToken):
+//         Promise<vscode.Location[]> {
+//         //Get all files in the current workspace
+//         const allFiles = vscode.workspace.findFiles('**/*.sm');
+
+//         return allFiles.then(async (files) => {
+//             const references: vscode.Location[] = [];
+
+//             // Process files in parallel
+//             for (const fileUri of files) {
+//                 try {
+//                     // Get the TextDocument object for the file
+//                     const fileDocument = await vscode.workspace.openTextDocument(fileUri);
+
+//                     // Read the content of the file
+//                     const fileContent = fileDocument.getText();
+
+//                     // Find references to the same word at the given position in the text
+//                     const wordRange = document.getWordRangeAtPosition(position);
+//                     if (wordRange) {
+//                         const referenceText = document.getText(wordRange);
+//                         const referenceRegExp = new RegExp(`\\b${referenceText}\\b`, 'g');
+//                         let match;
+
+//                         while ((match = referenceRegExp.exec(fileContent))) {
+//                             // Calculate the position of the match in the file
+//                             const matchOffset = match.index;
+//                             const matchStartPosition = fileDocument.positionAt(matchOffset);
+//                             const matchEndPosition = fileDocument.positionAt(matchOffset + referenceText.length);
+//                             const referenceRange = new vscode.Range(matchStartPosition, matchEndPosition);
+//                             const referenceLocation = new vscode.Location(fileUri, referenceRange);
+//                             references.push(referenceLocation);
+//                         }
+//                     }
+//                 } catch (error) {
+//                     console.error(`Error reading file ${fileUri.fsPath}: ${error}`);
+//                 }
+//             }
+
+//             return references;
+//         });
+//     }
+// }
+
+class gem5sliccReferenceProvider implements vscode.ReferenceProvider {
+    public async provideReferences(
+        document: vscode.TextDocument, position: vscode.Position,
+        options: { includeDeclaration: boolean }, token: vscode.CancellationToken):
+        Promise<vscode.Location[]> {
+
+        // Get all files in the current workspace
+        const allFiles = vscode.workspace.findFiles('**/*.sm');
+
+        return allFiles.then(async (files) => {
+            const references: vscode.Location[] = [];
+
+            // Process files in parallel
+            await Promise.all(files.map(async (fileUri) => {
+                try {
+                    // Get the TextDocument object for the file
+                    const fileDocument = await vscode.workspace.openTextDocument(fileUri);
+
+                    // Read the content of the file
+                    const fileContent = fileDocument.getText();
+
+                    // Find references to the same word at the given position in the text
+                    const wordRange = document.getWordRangeAtPosition(position);
+                    if (wordRange) {
+                        const referenceText = document.getText(wordRange);
+                        const referenceRegExp = new RegExp(`\\b${referenceText}\\b`, 'g');
+                        let match;
+
+                        while ((match = referenceRegExp.exec(fileContent))) {
+                            // Calculate the position of the match in the file
+                            const matchOffset = match.index;
+                            const matchStartPosition = fileDocument.positionAt(matchOffset);
+                            const matchEndPosition = fileDocument.positionAt(matchOffset + referenceText.length);
+                            const referenceRange = new vscode.Range(matchStartPosition, matchEndPosition);
+                            const referenceLocation = new vscode.Location(fileUri, referenceRange);
+                            references.push(referenceLocation);
+                        }
+                    }
+                } catch (error) {
+                    console.error(`Error reading file ${fileUri.fsPath}: ${error}`);
+                }
+            }));
+
+            return references;
         });
     }
 }

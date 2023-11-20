@@ -12,6 +12,9 @@
     "Programming Languages"
   ],
   "main": "./out/extension.js",
+  "capabilities" : {
+    "referencesProvider" : "true"
+  },
   "contributes": {
     "languages": [
       {
