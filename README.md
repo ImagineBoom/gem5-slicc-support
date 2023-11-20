@@ -12,6 +12,10 @@ gem5-slicc supportor
 
 ![Alt text](images/outline.png)
 
+### code reference
+
+![Alt text](images/code_reference.png)
+
 ### syntax highlight support
 
 - [x] variable
