@@ -3,6 +3,8 @@
 // src/extension.ts
 
 import * as vscode from 'vscode';
+import * as path from 'path';
+import * as fs from 'fs';
 
 export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(
@@ -16,6 +18,13 @@ export function activate(context: vscode.ExtensionContext) {
         vscode.languages.registerReferenceProvider(
             'gem5-slicc',
             new gem5sliccReferenceProvider()
+        )
+    );
+
+    context.subscriptions.push(
+        vscode.languages.registerCompletionItemProvider(
+            'gem5-slicc',
+            new gem5sliccCompletionItemProvider()
         )
     );
 }
@@ -294,4 +303,114 @@ class gem5sliccReferenceProvider implements vscode.ReferenceProvider {
             return references;
         });
     }
+}
+
+class gem5sliccCompletionItemProvider implements vscode.CompletionItemProvider {
+    async provideCompletionItems(document: vscode.TextDocument, position: vscode.Position, token: vscode.CancellationToken, context: vscode.CompletionContext): Promise<vscode.CompletionItem[] | vscode.CompletionList> {
+        const currentFilePath = document.uri.fsPath;
+        const dirPath = path.dirname(currentFilePath);
+        const sliccFilePath = await this.findSliccFileForCurrentFile(dirPath, path.basename(currentFilePath));
+        // console.log(`${sliccFilePath}`)
+
+        if (sliccFilePath) {
+            console.log(`${sliccFilePath}`)
+            return await this.getSuggestionsFromIncludedFiles(sliccFilePath);
+        } else {
+            console.log(`${currentFilePath} not find .slicc!`)
+            return this.getSuggestionsFromCurrentFile(document.getText());
+        }
+    }
+
+    private async findSliccFileForCurrentFile(dirPath: string, currentFileName: string): Promise<string | null> {
+        const root = path.parse(dirPath).root;
+        // Get the filename without the extension
+        const baseFileName = path.basename(currentFileName, path.extname(currentFileName));
+
+        try {
+            while (dirPath !== root) {
+                const files = await fs.promises.readdir(dirPath);
+                let accumulativeName = '';
+
+                for (const char of baseFileName) {
+                    accumulativeName += char;
+                    const potentialSliccFileName = `${accumulativeName}.slicc`;
+                    // console.log(`potentialSliccFileName=${potentialSliccFileName}`)
+
+                    if (files.includes(potentialSliccFileName)) {
+                        // Return the full path of the found .slicc file
+                        return path.join(dirPath, potentialSliccFileName);
+                    }
+                }
+                // Move to the parent directory
+                dirPath = path.join(dirPath, '..');
+            }
+        } catch (error) {
+            console.error('Error finding .slicc file:', error);
+        }
+        // Return null if no .slicc file is found
+        return null;
+    }
+
+    private async getSuggestionsFromIncludedFiles(sliccFilePath: string): Promise<vscode.CompletionItem[]> {
+        // console.log("in getSuggestionsFromIncludedFiles()")
+
+        const sliccFileContent = await fs.promises.readFile(sliccFilePath, 'utf8');
+
+        const lines = sliccFileContent.split('\n');
+
+        let filePaths: string[] = [];
+        for (const line of lines) {
+            if (line.startsWith('include')) {
+                const match = line.match(/"(.+?)"/);
+                // console.log(`match: ${match}`);
+
+                if (match) {
+                    const includedFilePath = path.join(path.dirname(sliccFilePath), match[1]);
+                    // console.log(`Included file path: ${includedFilePath}`);
+                    filePaths.push(includedFilePath);
+                }
+                else{
+                    console.log(`not match: ${match}`);
+                }
+            }
+        }
+
+        const uniqueWords = new Set<string>();
+        const fileContents = await Promise.all(
+            filePaths.map(filePath =>
+                fs.promises.readFile(filePath, 'utf8').catch(() => '')
+            )
+        );
+
+        fileContents.forEach(content => {
+            const words = content.split(/\W+/);
+            for (const word of words) {
+                if (word) {
+                    uniqueWords.add(word);
+                    // console.log(word)
+                }
+            }
+        });
+
+        const suggestions = Array.from(uniqueWords).map(word => new vscode.CompletionItem(word));
+        return suggestions;
+    }
+
+    private getSuggestionsFromCurrentFile(currentFileContent: string): vscode.CompletionItem[] {
+        // console.log("in getSuggestionsFromCurrentFile()")
+
+        const uniqueWords = new Set<string>();
+        const words = currentFileContent.split(/\W+/);
+
+        for (const word of words) {
+            if (word) {
+                uniqueWords.add(word);
+                // console.log(word)
+            }
+        }
+
+        const suggestions = Array.from(uniqueWords).map(word => new vscode.CompletionItem(word));
+        return suggestions;
+    }
+
 }

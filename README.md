@@ -16,6 +16,14 @@ gem5-slicc supportor
 
 ![Alt text](images/code_reference.png)
 
+### Accurate CompletionItem
+
+It will accumulate each character of the current file's filename and check for the existence of a corresponding .slicc suffix file, then extract minerals from it.
+
+For instance, for CHI-related sm, it will only use files mentioned in CHI.slicc
+
+![Alt text](images/completion.png)
+
 ### syntax highlight support
 
 - [x] variable
